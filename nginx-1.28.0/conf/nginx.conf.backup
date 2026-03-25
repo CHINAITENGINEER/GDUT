@@ -1,0 +1,96 @@
+# user  nobody;  # Windows系统不支持user指令，已注释
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;  # 可选：开启 gzip 压缩，优化静态资源加载速度（去掉 # 即可启用）
+
+    server {
+        listen       80;  # 监听 80 端口（HTTP 默认端口）
+        server_name  localhost;  # 可改成你的域名（如 example.com），暂时用 localhost 即可
+
+        # 管理员专属页面：直接匹配静态文件（administratorlogin.html / administratorindex.html）
+        location ~ ^/(administratorlogin|administratorindex)\.html$ {
+            root   /usr/local/nginx/html;  # Linux 前端文件存放目录（必须把前端文件上传到这里）
+            index  $uri;  # 直接访问匹配的文件名
+            expires 1d;  # 可选：设置静态文件缓存，优化性能
+        }
+
+        # 普通用户单页应用：默认访问 userlogin.html，支持前端路由
+        location / {
+            root   /usr/local/nginx/html;  # 和上面目录一致，统一存放前端文件
+            index  userlogin.html;  # 默认首页（确保该文件在 /usr/local/nginx/html 中）
+            try_files $uri $uri/ /index.html;  # 单页应用路由兼容（避免刷新404）
+            expires 1d;  # 可选：静态资源缓存
+        }
+
+        # 后端接口代理：转发 /api 开头的请求到 Spring Boot（需确保后端已启动）
+        location /api {
+            proxy_pass http://localhost:8080;  # 后端服务地址（同一台服务器则不变）
+            proxy_set_header Host $host;  # 传递主机头信息
+            proxy_set_header X-Real-IP $remote_addr;  # 传递真实客户端 IP
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_connect_timeout 30s;  # 可选：设置代理连接超时时间
+            proxy_read_timeout 60s;  # 可选：设置代理读取超时时间
+        }
+
+        # 服务器错误页面配置（500/502/503/504 错误时显示）
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;  # 错误页面默认在 Nginx 自带的 html 目录，无需修改
+        }
+    }
+
+    # HTTPS server（暂时注释，后续需启用 HTTPS 时再配置，需准备 SSL 证书）
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  你的域名.com;  # 替换成你的域名
+    #
+    #    ssl_certificate      cert/你的证书.pem;  # SSL 证书路径
+    #    ssl_certificate_key  cert/你的密钥.key;  # SSL 密钥路径
+    #
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+    #
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+    #
+    #    location / {
+    #        root   /usr/local/nginx/html;
+    #        index  userlogin.html;
+    #        try_files $uri $uri/ /index.html;
+    #    }
+    #
+    #    location /api {
+    #        proxy_pass http://localhost:8080;
+    #        proxy_set_header Host $host;
+    #        proxy_set_header X-Real-IP $remote_addr;
+    #        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #    }
+    #}
+}

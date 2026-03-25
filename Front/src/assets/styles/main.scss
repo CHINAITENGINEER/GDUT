@@ -1,0 +1,345 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// DESIGN TOKENS
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Color Palette - Modern Dark Theme
+$night:       #0f1419;
+$dark-bg:     #1a1f2e;
+$card-bg:     #252d3d;
+$border-dark: #3a4556;
+$text-primary: #e8eaed;
+$text-secondary: #a8adb5;
+$accent-blue: #5b9ef5;
+$accent-cyan: #4dd0e1;
+$accent-purple: #b39ddb;
+$accent-green: #81c784;
+$accent-orange: #ffb74d;
+$accent-red: #ef5350;
+
+// Typography
+$font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono: 'Fira Code', 'Inconsolata', monospace;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// Border Radius
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+// ═══════════════════════════════════════════════════════════════════════════
+// GLOBAL STYLES
+// ═══════════════════════════════════════════════════════════════════════════
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family;
+  background-color: #f5f7fa;
+  color: #303133;
+  // 默认暗色（当前页面视觉主要是暗色），由 App.vue 通过 body.theme-dark/body.theme-light 切换
+  --app-bg: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+  --app-text-color: #e8eaed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.theme-dark {
+  background-color: #0f1419;
+  color: #e8eaed;
+  --app-bg: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+  --app-text-color: #e8eaed;
+}
+
+body.theme-light {
+  background-color: #f5f7fa;
+  color: #303133;
+  --app-bg: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  --app-text-color: #303133;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// UTILITY CLASSES
+// ═══════════════════════════════════════════════════════════════════════════
+
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xl;
+  
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-primary;
+    letter-spacing: -0.5px;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
+}
+
+.empty-box {
+  text-align: center;
+  padding: $spacing-2xl $spacing-lg;
+  color: $text-secondary;
+  background: rgba($card-bg, 0.5);
+  border-radius: $radius-lg;
+  border: 1px solid $border-dark;
+  
+  .el-icon {
+    font-size: 48px;
+    margin-bottom: $spacing-lg;
+    opacity: 0.6;
+  }
+  
+  p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ELEMENT PLUS OVERRIDES
+// ═══════════════════════════════════════════════════════════════════════════
+
+:deep(.el-button--primary) {
+  --el-button-bg-color: $accent-blue;
+  --el-button-border-color: $accent-blue;
+  --el-button-hover-bg-color: lighten($accent-blue, 10%);
+  --el-button-hover-border-color: lighten($accent-blue, 10%);
+  --el-button-active-bg-color: darken($accent-blue, 10%);
+  --el-button-active-border-color: darken($accent-blue, 10%);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+:deep(.el-input__wrapper) {
+  background-color: rgba($card-bg, 0.8);
+  border-color: $border-dark;
+  
+  &:hover {
+    border-color: $accent-blue;
+  }
+}
+
+:deep(.el-input__inner) {
+  color: $text-primary;
+  
+  &::placeholder {
+    color: $text-secondary;
+  }
+}
+
+:deep(.el-card) {
+  background-color: $card-bg;
+  border-color: $border-dark;
+  box-shadow: $shadow-sm;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: $accent-blue;
+    box-shadow: $shadow-md;
+  }
+}
+
+:deep(.el-dialog__header) {
+  border-bottom-color: $border-dark;
+}
+
+:deep(.el-dialog) {
+  background-color: $dark-bg;
+}
+
+:deep(.el-dropdown-menu) {
+  background-color: $card-bg;
+  border-color: $border-dark;
+}
+
+:deep(.el-dropdown-menu__item) {
+  color: $text-primary;
+  
+  &:hover {
+    background-color: rgba($accent-blue, 0.1);
+    color: $accent-blue;
+  }
+}
+
+:deep(.el-pagination .btn-prev),
+:deep(.el-pagination .btn-next),
+:deep(.el-pagination .el-pager li) {
+  background-color: transparent;
+  color: $text-secondary;
+  
+  &:hover {
+    color: $accent-blue;
+  }
+  
+  &.active {
+    color: $accent-blue;
+  }
+}
+
+:deep(.el-radio__input.is-checked .el-radio__inner) {
+  background-color: $accent-blue;
+  border-color: $accent-blue;
+}
+
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: $accent-blue;
+  border-color: $accent-blue;
+}
+
+:deep(.el-select-dropdown) {
+  background-color: $card-bg;
+  border-color: $border-dark;
+}
+
+:deep(.el-option) {
+  color: $text-primary;
+  
+  &:hover {
+    background-color: rgba($accent-blue, 0.1);
+  }
+  
+  &.selected {
+    color: $accent-blue;
+  }
+}
+
+// ====================
+// Theme overrides (Light)
+// ====================
+body.theme-light {
+  ::deep(.el-card) {
+    background-color: #ffffff;
+    border-color: #e5e7eb;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.06);
+  }
+
+  ::deep(.el-dialog) {
+    background-color: #ffffff;
+  }
+
+  ::deep(.el-dialog__header) {
+    border-bottom-color: #e5e7eb;
+  }
+
+  ::deep(.el-input__wrapper) {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: #d1d5db;
+
+    &:hover {
+      border-color: #5b9ef5;
+    }
+  }
+
+  ::deep(.el-input__inner) {
+    color: #303133;
+
+    &::placeholder {
+      color: #6b7280;
+    }
+  }
+
+  ::deep(.el-dropdown-menu) {
+    background-color: #ffffff;
+    border-color: #e5e7eb;
+  }
+
+  ::deep(.el-dropdown-menu__item) {
+    color: #303133;
+
+    &:hover {
+      background-color: rgba($accent-blue, 0.08);
+      color: $accent-blue;
+    }
+  }
+
+  ::deep(.el-pagination .btn-prev),
+  ::deep(.el-pagination .btn-next),
+  ::deep(.el-pagination .el-pager li) {
+    background-color: transparent;
+    color: #6b7280;
+
+    &:hover {
+      color: $accent-blue;
+    }
+
+    &.active {
+      color: $accent-blue;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ANIMATIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}

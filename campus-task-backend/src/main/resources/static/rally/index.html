@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RALLY NOW · 实时组队</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=IBM+Plex+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/rally/styles.css" />
+</head>
+<body>
+<div class="bg-noise"></div>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <p class="brand">RALLY NOW</p>
+      <h1>运动 / 游戏 · 实时召集组队</h1>
+    </div>
+    <div class="token-box">
+      <input id="tokenInput" type="text" placeholder="粘贴你的 JWT Token" />
+      <button id="connectBtn">连接实时服务</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel creator">
+      <h2>发起召集</h2>
+      <form id="createForm">
+        <div class="row two">
+          <label>活动类型
+            <select id="typeInput">
+              <option value="1">🏃 运动</option>
+              <option value="2">🎮 游戏</option>
+            </select>
+          </label>
+          <label>召集人数
+            <input id="countInput" type="number" min="1" max="100" value="5" />
+          </label>
+        </div>
+        <label>活动标题
+          <input id="titleInput" maxlength="100" placeholder="例如：今晚 8 点羽毛球双打" />
+        </label>
+        <label>发起时间
+          <input id="startInput" type="datetime-local" />
+        </label>
+        <label>备注
+          <textarea id="remarkInput" maxlength="300" placeholder="集合地点 / 开黑语音频道 / 其他说明"></textarea>
+        </label>
+        <button class="primary" type="submit">立即发起</button>
+      </form>
+    </section>
+
+    <section class="panel lobby">
+      <div class="section-head">
+        <h2>实时召集大厅</h2>
+        <button id="refreshBtn" class="ghost">刷新列表</button>
+      </div>
+      <div id="activityList" class="activity-list"></div>
+    </section>
+
+    <section class="panel room">
+      <div class="section-head">
+        <h2 id="roomTitle">活动聊天室</h2>
+        <div class="room-actions">
+          <button id="joinBtn" class="ghost">参加</button>
+          <button id="quitBtn" class="ghost danger">退出</button>
+          <button id="endBtn" class="ghost warning">结束活动</button>
+        </div>
+      </div>
+
+      <div id="memberBar" class="member-bar">请选择活动</div>
+      <div id="chatMessages" class="chat-messages"></div>
+
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" maxlength="1000" placeholder="输入消息并回车发送..." />
+        <button type="submit">发送</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script src="/rally/app.js"></script>
+</body>
+</html>
