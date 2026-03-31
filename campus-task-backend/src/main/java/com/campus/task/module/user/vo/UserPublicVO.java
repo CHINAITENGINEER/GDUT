@@ -19,6 +19,10 @@ public class UserPublicVO {
     private String avatar;
     private String bio;
     private List<String> skills;
+    private List<String> abilityTags;
+    private List<Integer> preferredCategoryIds;
+    private Integer preferredDeliveryType;
+    private Integer maxDistanceKm;
     private Integer creditScore;
     private Integer level;
     private String levelName;

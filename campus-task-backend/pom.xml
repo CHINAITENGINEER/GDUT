@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -20,6 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
+        <hanlp.version>portable-1.8.4</hanlp.version>
         <knife4j.version>4.4.0</knife4j.version>
         <jjwt.version>0.12.5</jjwt.version>
         <hutool.version>5.8.26</hutool.version>
@@ -124,7 +125,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+    
+        <!-- HanLP 轻量便携版（中文分词，用于任务标签提取） -->
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>${hanlp.version}</version>
+        </dependency>
+</dependencies>
 
     <build>
         <plugins>

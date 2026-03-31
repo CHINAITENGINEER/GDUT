@@ -10,6 +10,7 @@ import com.campus.task.common.utils.SnowflakeUtil;
 import com.campus.task.module.message.service.MessageService;
 import com.campus.task.module.payment.entity.Settlement;
 import com.campus.task.module.payment.mapper.SettlementMapper;
+import com.campus.task.module.recommendation.service.RecommendationService;
 import com.campus.task.module.task.dto.*;
 import com.campus.task.module.task.entity.GrabRecord;
 import com.campus.task.module.task.entity.Task;
@@ -51,6 +52,7 @@ public class TaskServiceImpl implements TaskService {
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
     private final MessageService messageService;
+    private final RecommendationService recommendationService;
     private final com.campus.task.module.task.mapper.TaskCategoryMapper taskCategoryMapper;
 
     @Value("${platform.task-audit-threshold:200}")
@@ -417,6 +419,7 @@ public class TaskServiceImpl implements TaskService {
         settlement.setExpGained(expGained);
         settlement.setStatus(0);
         settlementMapper.insert(settlement);
+        recommendationService.updateWeightsAfterSettlement(acceptor.getId(), task.getId());
         redisTemplate.delete("user:level:" + acceptor.getId());
         redisTemplate.delete("user:credit:" + acceptor.getId());
         if (levelUp) {

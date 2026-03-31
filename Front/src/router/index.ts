@@ -63,6 +63,12 @@ const routes = [
     meta: { requiresAuth: true, title: '消息中心' }
   },
   {
+    path: '/recommendation',
+    name: 'Recommendation',
+    component: () => import('@/views/Recommendation.vue'),
+    meta: { requiresAuth: true, title: '推荐中心' }
+  },
+  {
     path: '/payment/pay',
     name: 'Payment',
     component: () => import('@/views/Payment.vue'),

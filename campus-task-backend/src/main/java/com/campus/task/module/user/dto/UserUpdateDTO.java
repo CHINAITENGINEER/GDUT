@@ -22,4 +22,10 @@ public class UserUpdateDTO {
 
     /** 技能标签，最多10个 */
     private List<String> skills;
+
+    /** 推荐能力标签，最多12个 */
+    private List<String> abilityTags;
+
+    /** 偏好任务分类ID */
+    private List<Integer> preferredCategoryIds;
 }

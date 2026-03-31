@@ -27,6 +27,20 @@ public class User {
     private String bio;
     /** 技能标签（JSON数组字符串） */
     private String skills;
+    /** 推荐能力标签（JSON数组字符串） */
+    private String abilityTags;
+    /** 偏好任务分类ID（JSON数组字符串） */
+    private String preferredCategories;
+    /** 推荐画像：偏好交付方式 0线上 1线下 */
+    private Integer preferredDeliveryType;
+    /** 推荐画像：最低可接受金额 */
+    private BigDecimal minAcceptAmount;
+    /** 推荐画像：最高可接受金额 */
+    private BigDecimal maxAcceptAmount;
+    /** 推荐画像：每日推荐数量上限 */
+    private Integer dailyRecommendLimit;
+    /** 推荐权重（JSON对象） */
+    private String recommendWeights;
     /** 角色：0普通用户 1管理员 */
     private Integer role;
     /** 信誉分 */

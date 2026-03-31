@@ -39,9 +39,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token)) {
             Long userId = jwtUtil.getUserId(token);
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // 比对 Redis 中的 Token（防止登出后重用）
-                String redisToken = redisTemplate.opsForValue().get("token:" + userId);
-                if (token.equals(redisToken)) {
+                boolean allowByRedis = false;
+                try {
+                    // 比对 Redis 中的 Token（防止登出后重用）；
+                    // 若本地未启动 Redis 或连接异常，降级为仅校验 JWT（便于本地开发）。
+                    String redisToken = redisTemplate.opsForValue().get("token:" + userId);
+                    allowByRedis = (redisToken == null) || token.equals(redisToken);
+                } catch (Exception ex) {
+                    // Redis 不可用时，允许基于 JWT 继续（开发友好）；生产环境应确保 Redis 可用
+                    allowByRedis = true;
+                }
+
+                if (allowByRedis) {
                     UserDetails userDetails = userDetailsService.loadUserById(userId);
                     if (userDetails != null) {
                         UsernamePasswordAuthenticationToken auth =

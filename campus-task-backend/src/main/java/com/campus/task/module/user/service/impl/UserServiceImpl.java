@@ -29,8 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -160,6 +162,20 @@ public class UserServiceImpl implements UserService, UserDetailsServiceImpl {
                 throw new BusinessException("技能标签格式错误");
             }
         }
+        if (dto.getAbilityTags() != null) {
+            try {
+                user.setAbilityTags(objectMapper.writeValueAsString(dto.getAbilityTags()));
+            } catch (Exception e) {
+                throw new BusinessException("能力标签格式错误");
+            }
+        }
+        if (dto.getPreferredCategoryIds() != null) {
+            try {
+                user.setPreferredCategories(objectMapper.writeValueAsString(dto.getPreferredCategoryIds()));
+            } catch (Exception e) {
+                throw new BusinessException("偏好分类格式错误");
+            }
+        }
         userMapper.updateById(user);
         return toProfileVO(user);
     }
@@ -210,6 +226,9 @@ public class UserServiceImpl implements UserService, UserDetailsServiceImpl {
         vo.setAvatar(user.getAvatar());
         vo.setBio(user.getBio());
         vo.setSkills(parseSkills(user.getSkills()));
+        vo.setAbilityTags(parseSkills(user.getAbilityTags()));
+        vo.setPreferredCategoryIds(parseIntegerList(user.getPreferredCategories()));
+        vo.setPreferredDeliveryType(user.getPreferredDeliveryType());
         vo.setCreditScore(user.getCreditScore());
         vo.setLevel(user.getLevel());
         UserLevel lv = UserLevel.of(user.getLevel());
@@ -224,6 +243,19 @@ public class UserServiceImpl implements UserService, UserDetailsServiceImpl {
         vo.setCompletedCount(completedCount);
         vo.setCreatedAt(user.getCreatedAt().atZone(ZoneId.of("Asia/Shanghai")).toInstant().toEpochMilli());
         return vo;
+    }
+
+    private List<Integer> parseIntegerList(String preferredCategories) {
+        List<Integer> list =new ArrayList<>();
+        if(preferredCategories==null||preferredCategories=="")
+            return list;
+        preferredCategories=preferredCategories.trim();
+       String arr[]=preferredCategories.split(",");
+       for (String s : arr) {
+            list.add(Integer.parseInt(s));
+
+        }
+       return list;
     }
 
     @Override

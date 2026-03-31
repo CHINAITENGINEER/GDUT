@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import type { PageResult } from '@/utils/request'
-import type { UserProfileVO, LevelInfoVO, BalanceVO } from '@/types'
+import type { UserProfileVO, LevelInfoVO, BalanceVO, UserPublicVO } from '@/types'
 
 export interface UserUpdateDTO {
   nickname?: string
@@ -38,5 +38,5 @@ export const userApi = {
     request.get<BalanceVO>('/user/balance'),
 
   getUserById: (id: string) =>
-    request.get<any>(`/user/${id}`),
+    request.get<UserPublicVO>(`/user/${id}`),
 }

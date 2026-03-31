@@ -21,6 +21,14 @@ public class UserProfileVO {
     private String avatar;
     private String bio;
     private List<String> skills;
+    private List<String> abilityTags;
+    private List<Integer> preferredCategoryIds;
+    private Integer preferredDeliveryType;
+    private java.math.BigDecimal minAcceptAmount;
+    private java.math.BigDecimal maxAcceptAmount;
+    private Integer maxDistanceKm;
+    private Integer dailyRecommendLimit;
+    private java.util.Map<String, java.math.BigDecimal> recommendWeights;
     private Integer role;
     private String currentRole;   // publisher / acceptor
     private Integer creditScore;

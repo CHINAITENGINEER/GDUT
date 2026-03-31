@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import type { UserProfileVO } from '@/types'
 import { authApi } from '@/api/auth'
 import { userApi } from '@/api/user'
-import md5 from 'md5'
+// 后端已兼容 BCrypt 和 SHA256+salt，前端无需再二次加密
 
 export const useUserStore = defineStore('user', () => {
   const token = ref<string | null>(localStorage.getItem('campus_token'))
@@ -17,9 +17,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function login(data: { account: string; password?: string; smsCode?: string; loginType: 0 | 1; remember: boolean }) {
     const loginData = { ...data }
-    if (loginData.password) {
-      loginData.password = md5(loginData.password)
-    }
+    // 直接传明文密码，交由后端进行 BCrypt / SHA256+salt 校验
     // interceptor already unwraps R<LoginVO> -> LoginVO
     const res = await authApi.login(loginData)
     token.value = res.token
