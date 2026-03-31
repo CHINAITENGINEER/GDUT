@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/campus_task?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: campus_task
+    password: 123456
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          min-idle: 2
+          max-idle: 8
+          max-active: 16
+
+file:
+  upload-path: ./uploads/
+  access-prefix: /uploads/
+  storage-type: oss
+
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5tDLn1ZJtdoquSPJMMf2
+    access-key-secret: tA67LI8cXJk9eK62lBLAkUxAPzMrZDi
+    bucket-name: java-gdut
+    url-prefix: https://java-gdut.oss-cn-beijing.aliyuncs.com/

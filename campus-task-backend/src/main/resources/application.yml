@@ -6,30 +6,13 @@ server:
 spring:
   application:
     name: campus-task-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 50MB
       enabled: true
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/campus_task?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-    username: campus_task
-    password: 123456
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password:       # 无密码留空
-      database: 0
-      timeout: 3000ms
-      lettuce:
-        pool:
-          min-idle: 2
-          max-idle: 8
-          max-active: 16
 
   jackson:
     time-zone: Asia/Shanghai
@@ -39,49 +22,34 @@ spring:
 
   web:
     resources:
-      static-locations: file:./uploads/,classpath:/static/   # 本地图片静态访问
+      static-locations: file:./uploads/,classpath:/static/
 
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: true   # 下划线转驼峰
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 开发期打印SQL
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      logic-delete-field: deleted        # 若需逻辑删除可启用
+      logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
   mapper-locations: classpath*:mapper/**/*.xml
 
 # JWT 配置
 jwt:
-  secret: campus_task_jwt_secret_key_2026_must_be_at_least_32_chars
-  expire-days: 7        # Token有效期（天）
-  short-expire-days: 1  # 不勾选记住我时的有效期
-
-# 文件上传存储路径
-file:
-  upload-path: ./uploads/
-  access-prefix: /uploads/   # 对外访问前缀
-  storage-type: oss          # 存储类型：local(本地) / oss(阿里云)
-
-# 阿里云 OSS 配置
-aliyun:
-  oss:
-    endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID:your-access-key-id}
-    access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET:your-access-key-secret}
-    bucket-name: java-gdut
-    url-prefix: https://java-gdut.oss-cn-beijing.aliyuncs.com/
+  secret: ${JWT_SECRET:campus_task_jwt_secret_key_2026_must_be_at_least_32_chars}
+  expire-days: 7
+  short-expire-days: 1
 
 # 平台配置
 platform:
   task-min-amount: 1
   task-max-amount: 500
-  task-audit-threshold: 200     # 超过此金额需审核
-  grab-lock-minutes: 20         # 锁单时长（分钟）
-  grab-daily-limit: 5           # 每日抢单上限
-  violation-daily-limit: 3      # 每日违规上限（超过禁止当日抢单）
-  grab-freeze-score: 1          # 抢单冻结积分数
+  task-audit-threshold: 200
+  grab-lock-minutes: 20
+  grab-daily-limit: 5
+  violation-daily-limit: 3
+  grab-freeze-score: 1
 
 # SpringDoc / Knife4j
 springdoc:
