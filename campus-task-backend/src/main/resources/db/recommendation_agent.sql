@@ -1,7 +1,7 @@
 -- 兼容初始化：若库不存在则创建
 CREATE DATABASE IF NOT EXISTS campus_task
   DEFAULT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_0900_ai_ci;
+  COLLATE utf8mb4_unicode_ci;
 USE campus_task;
 
 -- 推荐模块画像字段扩展（distance 相关字段已移除：本平台为任务接单平台，不依赖地理距离）
